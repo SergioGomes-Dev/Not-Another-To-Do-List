@@ -9,7 +9,7 @@ import {
   USER_REGISTER_SUCCESS,
 } from "../constants/userConstants";
 
-export const loginAction = (email, password) => async (dispatch) => {
+export const loginAction = (email, password, remember) => async (dispatch) => {
   try {
     dispatch({
       type: USER_LOGIN_REQUEST,
@@ -23,7 +23,7 @@ export const loginAction = (email, password) => async (dispatch) => {
 
     const { data } = await axios.post(
       "/api/users/login",
-      { email, password },
+      { email, password, remember },
       config
     );
 

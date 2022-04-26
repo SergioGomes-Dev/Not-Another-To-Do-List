@@ -10,6 +10,7 @@ import { loginAction } from "../actions/userActions";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -30,6 +31,14 @@ const LoginScreen = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(loginAction(email, password));
+  };
+
+  const checkClick = (e) => {
+    if (remember === false) {
+      setRemember(true);
+    } else {
+      setRemember(false);
+    }
   };
 
   return (
@@ -56,6 +65,16 @@ const LoginScreen = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
+        </Form.Group>
+
+        <Form.Group className="mt-2">
+          <h6 className="inline me-1"> Remember me for 30 days</h6>
+          <Form.Check
+            className="inline"
+            type="checkbox"
+            checked={remember}
+            onChange={checkClick}
+          ></Form.Check>
         </Form.Group>
 
         <Button className="mt-3" type="submit" variant="dark">

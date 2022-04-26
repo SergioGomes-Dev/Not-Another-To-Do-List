@@ -6,7 +6,7 @@ import User from "../models/userModel.js";
 // @route  POST /api/users/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
 
   const user = await User.findOne({ email: email });
 
@@ -16,7 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       verified: user.verified,
-      token: generateToken(user._id),
+      token: generateToken(user._id, remember),
     });
   } else {
     res.status(401);
