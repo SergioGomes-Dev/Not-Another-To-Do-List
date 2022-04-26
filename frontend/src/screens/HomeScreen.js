@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import List from "../components/List";
 import Loader from "../components/Loader";
@@ -8,17 +9,24 @@ import { listsAllAction } from "../actions/listActions";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const listsAll = useSelector((state) => state.listsAll);
   const { loading, error, lists } = listsAll;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
     dispatch(listsAllAction());
   }, [dispatch]);
 
   return (
     <>
-      <h1>All Lists</h1>
+      <h1>{userInfo?.name}'s Lists</h1>
 
       {loading ? (
         <Loader />
