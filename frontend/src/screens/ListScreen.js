@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ListGroup, ListGroupItem, Card } from "react-bootstrap";
-import lists from "../sampleLists";
+import axios from "axios";
 
 const ListScreen = () => {
+  const [list, setList] = useState({});
+
   const { id } = useParams();
-  const list = lists.find((p) => p._id === id);
+
+  useEffect(() => {
+    const fetchList = async () => {
+      const { data } = await axios.get(`/api/lists/${id}`);
+
+      setList(data);
+    };
+
+    fetchList();
+  }, [id]);
 
   return (
     <>

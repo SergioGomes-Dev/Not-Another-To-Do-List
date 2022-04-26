@@ -16,8 +16,6 @@ const importData = async () => {
 
     const createdUsers = await User.insertMany(users);
 
-    // const adminUser = createdUsers[0]._id;
-
     const sampleLists = lists.map((list) => {
       return { ...list, user: createdUsers[0] };
     });

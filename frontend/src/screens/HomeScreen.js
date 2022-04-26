@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import List from "../components/List";
 import { Row, Col } from "react-bootstrap";
-import lists from "../sampleLists";
+import axios from "axios";
 
 const HomeScreen = () => {
+  const [lists, setLists] = useState([]);
+
+  useEffect(() => {
+    const fetchLists = async () => {
+      const { data } = await axios.get("/api/lists");
+
+      setLists(data);
+    };
+    fetchLists();
+  }, []);
+
   return (
     <>
       <h1>All Lists</h1>

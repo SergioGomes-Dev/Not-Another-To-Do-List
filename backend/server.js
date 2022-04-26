@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import lists from "./data/sampleLists.js";
+import listRoutes from "./routes/listRoutes.js";
 
 dotenv.config();
 
@@ -13,14 +13,8 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-app.get("/api/lists", (req, res) => {
-  res.json(lists);
-});
-
-app.get("/api/lists/:id", (req, res) => {
-  const list = lists.find((p) => p._id === req.params.id);
-  res.json(list);
-});
+//Routes
+app.use("/api/lists", listRoutes);
 
 const PORT = process.env.PORT || 5000;
 
