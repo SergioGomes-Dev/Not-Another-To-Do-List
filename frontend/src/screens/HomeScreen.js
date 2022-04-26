@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import List from "../components/List";
 import { Row, Col } from "react-bootstrap";
+import List from "../components/List";
+import Loader from "../components/Loader";
+import Message from "../components/Message";
 import { listsAllAction } from "../actions/listActions";
 
 const HomeScreen = () => {
@@ -17,10 +19,11 @@ const HomeScreen = () => {
   return (
     <>
       <h1>All Lists</h1>
+
       {loading ? (
-        <h1>Loading...</h1>
+        <Loader />
       ) : error ? (
-        <h2>{error}</h2>
+        <Message variant="danger">{error}</Message>
       ) : (
         <Row>
           {lists.map((list) => (
