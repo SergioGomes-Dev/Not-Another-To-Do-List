@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
+import ListScreen from "./screens/ListScreen";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" exact element={<HomeScreen />} />
+            <Route path="/list/:id" element={<ListScreen />} />
           </Routes>
         </Container>
       </main>
