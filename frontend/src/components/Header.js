@@ -32,7 +32,7 @@ const Header = () => {
                 <Nav className="ms-sm-auto">
                   <LinkContainer to="/account">
                     <Nav.Link>
-                      <i className="fas fa-user"></i> Account
+                      <i className="fas fa-user"></i> {userInfo.name}
                     </Nav.Link>
                   </LinkContainer>
                   <Nav.Link onClick={logoutHandler}>
