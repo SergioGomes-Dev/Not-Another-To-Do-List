@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import ListScreen from "./screens/ListScreen";
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Container>
           <Routes>
             <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
             <Route path="/" exact element={<HomeScreen />} />
             <Route path="/list/:id" element={<ListScreen />} />
           </Routes>

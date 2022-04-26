@@ -22,7 +22,7 @@ const HomeScreen = () => {
       navigate("/login");
     }
     dispatch(listsAllAction());
-  }, [dispatch]);
+  }, [dispatch, navigate, userInfo]);
 
   return (
     <>
