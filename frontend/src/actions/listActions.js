@@ -8,11 +8,22 @@ import {
   LIST_SUCCESS,
 } from "../constants/listConstants";
 
-export const listsAllAction = () => async (dispatch) => {
+export const listsAllAction = () => async (dispatch, getState) => {
   try {
     dispatch({ type: LISTS_REQUEST });
 
-    const { data } = await axios.get("/api/lists");
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get("/api/lists", config);
 
     dispatch({
       type: LISTS_SUCCESS,
@@ -29,11 +40,22 @@ export const listsAllAction = () => async (dispatch) => {
   }
 };
 
-export const listSingleAction = (id) => async (dispatch) => {
+export const listSingleAction = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: LIST_REQUEST });
 
-    const { data } = await axios.get(`/api/lists/${id}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/lists/${id}`, config);
 
     dispatch({
       type: LIST_SUCCESS,
