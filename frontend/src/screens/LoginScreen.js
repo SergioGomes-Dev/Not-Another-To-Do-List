@@ -23,9 +23,12 @@ const LoginScreen = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo?.verified === true) {
       navigate(redirect);
     }
+    // if (userInfo?.verified === false) {
+    //   navigate("/verify");
+    // }
   }, [navigate, userInfo, redirect]);
 
   const submitHandler = (e) => {

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
 import { ListGroup, ListGroupItem, Card } from "react-bootstrap";
 import Loader from "../components/Loader";
@@ -10,13 +11,23 @@ const ListScreen = () => {
   const { id } = useParams();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const listSingle = useSelector((state) => state.listSingle);
   const { loading, error, list } = listSingle;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
+    if (!userInfo || userInfo.verified === false) {
+      navigate("/verify");
+    }
+    if (userInfo?.verified === false) {
+      navigate("/verify");
+    }
     dispatch(listSingleAction(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate, userInfo]);
 
   return (
     <>

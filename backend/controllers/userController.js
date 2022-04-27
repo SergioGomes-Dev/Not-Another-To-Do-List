@@ -1,6 +1,9 @@
 import asyncHandler from "express-async-handler";
-import generateToken from "../utils/generateToken.js";
+import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
+import generateToken from "../utils/generateToken.js";
+import generateEmailToken from "../utils/generateEmailToken.js";
+import sendEmail from "../utils/sendVerificationEmail.js";
 
 // @desc   Auth user & get token
 // @route  POST /api/users/login
@@ -9,6 +12,11 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password, remember } = req.body;
 
   const user = await User.findOne({ email: email });
+
+  if (user?.verified === false) {
+    res.status(401);
+    throw new Error("Verify your email to login");
+  }
 
   if (user && (await user.matchPassword(password))) {
     res.json({
@@ -63,6 +71,10 @@ const registerUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
+  if (user.verified === false) {
+    res.status(401);
+    throw new Error("Verify your email to view profile");
+  }
   if (user) {
     res.json({
       _id: user._id,
@@ -76,4 +88,42 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, registerUser, getUserProfile };
+// @desc   Send verification email
+// @route  POST /api/users/verify
+// @access Private
+const verifyUserEmail = asyncHandler(async (req, res) => {
+  const { email, id } = req.body;
+
+  const emailToken = generateEmailToken(id);
+
+  sendEmail(emailToken, email);
+
+  res.json("Verification email has been sent to " + email);
+});
+
+// @desc   Verify Email
+// @route  GET /api/users/verify/:token
+// @access Private
+const verifyAccount = asyncHandler(async (req, res) => {
+  try {
+    //Verify Token
+    const id = jwt.verify(req.params.token, process.env.EMAIL_SECRET);
+    //Find User
+    const user = await User.findById(id.id);
+    //Verify User
+    user.verified = true;
+    await user.save();
+
+    res.json(user.email + " has been verified!");
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+export {
+  authUser,
+  registerUser,
+  getUserProfile,
+  verifyUserEmail,
+  verifyAccount,
+};

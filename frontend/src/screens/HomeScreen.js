@@ -21,6 +21,9 @@ const HomeScreen = () => {
     if (!userInfo) {
       navigate("/login");
     }
+    if (userInfo?.verified === false) {
+      navigate("/login");
+    }
     dispatch(listsAllAction());
   }, [dispatch, navigate, userInfo]);
 

@@ -30,11 +30,17 @@ const Header = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-sm-auto">
-                  <LinkContainer to="/account">
-                    <Nav.Link>
-                      <i className="fas fa-user"></i> {userInfo.name}
-                    </Nav.Link>
-                  </LinkContainer>
+                  {userInfo.verified === true && (
+                    <LinkContainer to="/account">
+                      <Nav.Link>
+                        <i
+                          className="fas fa-user"
+                          aria-label="Profile Link"
+                        ></i>
+                        {userInfo.name}
+                      </Nav.Link>
+                    </LinkContainer>
+                  )}
                   <Nav.Link onClick={logoutHandler}>
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                   </Nav.Link>

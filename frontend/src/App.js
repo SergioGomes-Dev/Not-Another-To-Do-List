@@ -6,6 +6,8 @@ import HomeScreen from "./screens/HomeScreen";
 import ListScreen from "./screens/ListScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import VerifyScreen from "./screens/VerifyScreen";
+import EmailScreen from "./screens/EmailScreen";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/verify" element={<VerifyScreen />} />
+            <Route path="/verify/:emailtoken" element={<EmailScreen />} />
             <Route path="/" exact element={<HomeScreen />} />
             <Route path="/list/:id" element={<ListScreen />} />
           </Routes>
