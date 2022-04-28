@@ -31,13 +31,10 @@ const Header = () => {
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-sm-auto">
                   {userInfo.verified === true && (
-                    <LinkContainer to="/account">
+                    <LinkContainer to="/profile">
                       <Nav.Link>
-                        <i
-                          className="fas fa-user"
-                          aria-label="Profile Link"
-                        ></i>
-                        {userInfo.name}
+                        <i className="fas fa-user"></i>
+                        Profile
                       </Nav.Link>
                     </LinkContainer>
                   )}

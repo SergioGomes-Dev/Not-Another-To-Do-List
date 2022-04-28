@@ -53,10 +53,10 @@ const VerifyScreen = () => {
         <h4>
           <b>Email:</b> {userInfo?.email}
         </h4>
+        <h5>Make sure to check your junk folder</h5>
         <Button variant="dark" onClick={sendEmailClick}>
           Send Verification Email
         </Button>
-        <h4>Make sure to check your junk folder</h4>
       </div>
     </>
   );

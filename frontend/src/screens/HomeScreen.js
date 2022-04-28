@@ -35,7 +35,7 @@ const HomeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <Row>
-          <h1>{userInfo?.name}'s Lists</h1>
+          <h1>All Lists</h1>
           {lists.map((list) => (
             <Col key={list._id} sm={12} md={6} lg={4} xl={4}>
               <List list={list} />

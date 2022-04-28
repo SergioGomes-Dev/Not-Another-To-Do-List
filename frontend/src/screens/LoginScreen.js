@@ -26,9 +26,6 @@ const LoginScreen = () => {
     if (userInfo?.verified === true) {
       navigate(redirect);
     }
-    // if (userInfo?.verified === false) {
-    //   navigate("/verify");
-    // }
   }, [navigate, userInfo, redirect]);
 
   const submitHandler = (e) => {
@@ -75,6 +72,7 @@ const LoginScreen = () => {
           <Form.Check
             className="inline"
             type="checkbox"
+            aria-label="Remember for 30 days"
             checked={remember}
             onChange={checkClick}
           ></Form.Check>

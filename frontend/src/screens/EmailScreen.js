@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { emailVerifyAction, loginAction } from "../actions/userActions";
+import { emailVerifyAction } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
@@ -17,6 +17,7 @@ const EmailScreen = () => {
 
   const verifyEmailClick = () => {
     dispatch(emailVerifyAction(emailtoken));
+    document.getElementById("alert").focus();
   };
 
   const loginClick = () => {
@@ -26,8 +27,10 @@ const EmailScreen = () => {
   return (
     <>
       {loading && <Loader />}
-      {error && <Message>{error}</Message>}
-      {success && <Message variant="success">{success}</Message>}
+      <div id="alert" tabIndex={0}>
+        {error && <Message>{error}</Message>}
+        {success && <Message variant="success">{success}</Message>}
+      </div>
 
       <div className="text-center py-5">
         {!success && (
