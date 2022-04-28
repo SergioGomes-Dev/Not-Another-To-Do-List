@@ -73,7 +73,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
   if (user.verified === false) {
     res.status(401);
-    throw new Error("Verify your email to view profile");
+    throw new Error("Verify your email to update profile");
   }
   if (user) {
     res.json({

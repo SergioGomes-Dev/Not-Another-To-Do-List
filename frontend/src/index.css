@@ -15,3 +15,9 @@ main {
 .inline {
   display: inline;
 }
+
+.profile {
+  margin: auto;
+  width: 400px;
+  padding: 10px;
+}

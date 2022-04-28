@@ -30,7 +30,7 @@ const LoginScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(loginAction(email, password));
+    dispatch(loginAction(email, password, remember));
   };
 
   const checkClick = (e) => {
