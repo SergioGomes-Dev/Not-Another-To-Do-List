@@ -33,8 +33,8 @@ const Header = () => {
                   {userInfo.verified === true && (
                     <LinkContainer to="/profile">
                       <Nav.Link>
-                        <i className="fas fa-user"></i>
-                        Profile
+                        <i className="fas fa-user me-1"></i>
+                        {userInfo.name}'s Profile
                       </Nav.Link>
                     </LinkContainer>
                   )}
