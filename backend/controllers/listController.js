@@ -68,12 +68,8 @@ const addList = asyncHandler(async (req, res) => {
 const removeList = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
-  const { user } = req.body;
-
-  const listUser = list.user.toString();
-
   if (list) {
-    if (listUser === user) {
+    if (list.user.toString() === req.user._id.toString()) {
       await list.remove();
       res.json("List Removed");
     } else {
@@ -92,10 +88,6 @@ const removeList = asyncHandler(async (req, res) => {
 const editList = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
-  const { user } = req.body;
-
-  const listUser = list.user.toString();
-
   if (!req.body.name) {
     res.status(400);
     throw new Error("No Title Entered");
@@ -108,7 +100,7 @@ const editList = asyncHandler(async (req, res) => {
   }
 
   if (list) {
-    if (listUser === user) {
+    if (list.user.toString() === req.user._id.toString()) {
       list.name = req.body.name || list.name;
 
       const updatedList = await list.save();

@@ -123,14 +123,9 @@ export const listDeleteAction = (id) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const user = userInfo._id;
-
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
-      },
-      data: {
-        user,
       },
     };
 
@@ -160,19 +155,13 @@ export const listEditAction = (id, name) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    const user = userInfo._id;
-
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-      data: {
-        user,
-        name,
-      },
     };
 
-    await axios.put(`/api/lists/${id}`, { user, name }, config);
+    await axios.put(`/api/lists/${id}`, { name }, config);
 
     dispatch({
       type: LIST_EDIT_SUCCESS,
