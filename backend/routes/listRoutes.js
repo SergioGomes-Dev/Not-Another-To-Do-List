@@ -6,10 +6,15 @@ import {
   getListById,
   addList,
   removeList,
+  editList,
 } from "../controllers/listController.js";
 
 //Route /api/lists
 router.route("/").get(protect, getLists).post(protect, addList);
-router.route("/:id").get(protect, getListById).delete(protect, removeList);
+router
+  .route("/:id")
+  .get(protect, getListById)
+  .delete(protect, removeList)
+  .put(protect, editList);
 
 export default router;

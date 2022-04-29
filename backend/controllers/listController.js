@@ -44,7 +44,7 @@ const addList = asyncHandler(async (req, res) => {
   //If only empty space
   if (name.replace(/ /g, "").length === 0) {
     res.status(400);
-    throw new Error("Title cannot be empty");
+    throw new Error("Title Cannot Be Empty");
   }
 
   const newList = await List.create({
@@ -80,4 +80,44 @@ const removeList = asyncHandler(async (req, res) => {
   }
 });
 
-export { getLists, getListById, addList, removeList };
+// @desc   Edit a list
+// @route  PUT /api/lists/:id
+// @access Private
+const editList = asyncHandler(async (req, res) => {
+  const list = await List.findById(req.params.id);
+
+  const { user } = req.body;
+
+  const listUser = list.user.toString();
+
+  if (!req.body.name) {
+    res.status(400);
+    throw new Error("No Title Entered");
+  }
+
+  //If only empty space
+  if (req.body.name.replace(/ /g, "").length === 0) {
+    res.status(400);
+    throw new Error("Title Cannot Be Empty");
+  }
+
+  if (list) {
+    if (listUser === user) {
+      list.name = req.body.name || list.name;
+
+      const updatedList = await list.save();
+
+      res.json({
+        name: updatedList.name,
+      });
+    } else {
+      res.status(404);
+      throw new Error("Incorrect User, Not Authorized.");
+    }
+  } else {
+    res.status(404);
+    throw new Error("List Not Found");
+  }
+});
+
+export { getLists, getListById, addList, removeList, editList };

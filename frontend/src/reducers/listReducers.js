@@ -12,6 +12,10 @@ import {
   LIST_DELETE_REQUEST,
   LIST_DELETE_SUCCESS,
   LIST_DELETE_RESET,
+  LIST_EDIT_FAIL,
+  LIST_EDIT_REQUEST,
+  LIST_EDIT_SUCCESS,
+  LIST_EDIT_RESET,
 } from "../constants/listConstants";
 
 export const listsAllReducer = (state = { lists: [] }, action) => {
@@ -62,6 +66,21 @@ export const listDeleteReducer = (state = {}, action) => {
     case LIST_DELETE_FAIL:
       return { loading: false, error: action.payload };
     case LIST_DELETE_RESET:
+      return { success: false };
+    default:
+      return state;
+  }
+};
+
+export const listEditReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LIST_EDIT_REQUEST:
+      return { loading: true };
+    case LIST_EDIT_SUCCESS:
+      return { loading: false, success: true };
+    case LIST_EDIT_FAIL:
+      return { loading: false, error: action.payload };
+    case LIST_EDIT_RESET:
       return { success: false };
     default:
       return state;

@@ -41,5 +41,8 @@ main {
 
 .fa-circle-xmark {
   color: #bf1d1d;
-  margin-left: 3px;
+}
+
+.list-edit-input {
+  width: 300px;
 }

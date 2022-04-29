@@ -12,6 +12,9 @@ import {
   LIST_DELETE_FAIL,
   LIST_DELETE_REQUEST,
   LIST_DELETE_SUCCESS,
+  LIST_EDIT_FAIL,
+  LIST_EDIT_REQUEST,
+  LIST_EDIT_SUCCESS,
 } from "../constants/listConstants";
 
 export const listsAllAction = () => async (dispatch, getState) => {
@@ -139,6 +142,44 @@ export const listDeleteAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: LIST_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listEditAction = (id, name) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: LIST_EDIT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const user = userInfo._id;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      data: {
+        user,
+        name,
+      },
+    };
+
+    await axios.put(`/api/lists/${id}`, { user, name }, config);
+
+    dispatch({
+      type: LIST_EDIT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: LIST_EDIT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
