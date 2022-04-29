@@ -12,6 +12,7 @@ const HomeScreen = () => {
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
+  const [maxLists, setMaxLists] = useState(3);
 
   const listsAll = useSelector((state) => state.listsAll);
   const { loading, error, lists } = listsAll;
@@ -49,6 +50,14 @@ const HomeScreen = () => {
     e.preventDefault();
     dispatch(listCreateAction(name));
     dispatch(listsAllAction());
+  };
+
+  const loadMoreClick = () => {
+    setMaxLists(maxLists + 3);
+  };
+
+  const loadAllClick = () => {
+    setMaxLists(12);
   };
 
   return (
@@ -94,13 +103,21 @@ const HomeScreen = () => {
             </div>
           </Form>
 
-          {lists.map((list) => (
+          {lists.slice(0, maxLists)?.map((list) => (
             <Col key={list._id} sm={12} md={6} lg={4} xl={4}>
               <List list={list} />
             </Col>
           ))}
         </Row>
       )}
+      <div className="load-btns">
+        <Button className="mx-2" onClick={loadMoreClick}>
+          Load More
+        </Button>
+        <Button variant="dark" onClick={loadAllClick}>
+          Load All
+        </Button>
+      </div>
     </>
   );
 };

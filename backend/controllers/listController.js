@@ -33,6 +33,12 @@ const getListById = asyncHandler(async (req, res) => {
 // @route  POST /api/lists
 // @access Private
 const addList = asyncHandler(async (req, res) => {
+  //Check Max Number of Lists
+  const allLists = await List.find({ user: req.user._id });
+  if (allLists.length >= 12) {
+    throw new Error("You Have Reached the Maximum Lists Allowed");
+  }
+
   //Get Name from input
   let { name } = req.body;
 

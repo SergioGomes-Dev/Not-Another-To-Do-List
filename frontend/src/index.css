@@ -46,3 +46,7 @@ main {
 .list-edit-input {
   width: 300px;
 }
+
+.load-btns {
+  text-align: center;
+}
