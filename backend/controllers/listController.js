@@ -29,4 +29,31 @@ const getListById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getLists, getListById };
+// @desc   Create a list
+// @route  POST /api/lists
+// @access Private
+const addList = asyncHandler(async (req, res) => {
+  //Get Name from input
+  let { name } = req.body;
+
+  if (!name) {
+    res.status(400);
+    throw new Error("No Title Entered");
+  }
+
+  //If only empty space
+  if (name.replace(/ /g, "").length === 0) {
+    res.status(400);
+    throw new Error("Title cannot be empty");
+  }
+
+  const newList = await List.create({
+    user: req.user._id,
+    name: name,
+  });
+
+  await newList.save();
+  res.json("List Created");
+});
+
+export { getLists, getListById, addList };

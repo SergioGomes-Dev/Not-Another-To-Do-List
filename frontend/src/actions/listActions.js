@@ -6,6 +6,9 @@ import {
   LIST_FAIL,
   LIST_REQUEST,
   LIST_SUCCESS,
+  LIST_CREATE_FAIL,
+  LIST_CREATE_REQUEST,
+  LIST_CREATE_SUCCESS,
 } from "../constants/listConstants";
 
 export const listsAllAction = () => async (dispatch, getState) => {
@@ -64,6 +67,38 @@ export const listSingleAction = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listCreateAction = (name, user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: LIST_CREATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post("/api/lists", { user, name }, config);
+
+    dispatch({
+      type: LIST_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: LIST_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
