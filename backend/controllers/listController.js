@@ -56,4 +56,28 @@ const addList = asyncHandler(async (req, res) => {
   res.json("List Created");
 });
 
-export { getLists, getListById, addList };
+// @desc   Delete a list
+// @route  DELETE /api/lists/:id
+// @access Private
+const removeList = asyncHandler(async (req, res) => {
+  const list = await List.findById(req.params.id);
+
+  const { user } = req.body;
+
+  const listUser = list.user.toString();
+
+  if (list) {
+    if (listUser === user) {
+      await list.remove();
+      res.json("List Removed");
+    } else {
+      res.status(404);
+      throw new Error("Incorrect User, Not Authorized.");
+    }
+  } else {
+    res.status(404);
+    throw new Error("List Not Found");
+  }
+});
+
+export { getLists, getListById, addList, removeList };

@@ -72,7 +72,10 @@ const HomeScreen = () => {
               onKeyPress={newListPress}
               aria-label="Press to open add list menu"
             ></span>
-            <i className="fa-solid fa-circle-plus" onClick={newListClick}></i>
+            <i
+              className="fa-solid fa-circle-plus point"
+              onClick={newListClick}
+            ></i>
           </div>
 
           <Form id="add-new-list" className="hidden" onSubmit={submitHandler}>

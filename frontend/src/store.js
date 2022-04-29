@@ -5,6 +5,7 @@ import {
   listsAllReducer,
   listSingleReducer,
   listCreateReducer,
+  listDeleteReducer,
 } from "./reducers/listReducers";
 import {
   userLoginReducer,
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   listsAll: listsAllReducer,
   listSingle: listSingleReducer,
   listCreate: listCreateReducer,
+  listDelete: listDeleteReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userEmail: userEmailReducer,

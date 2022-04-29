@@ -8,6 +8,10 @@ import {
   LIST_CREATE_FAIL,
   LIST_CREATE_REQUEST,
   LIST_CREATE_SUCCESS,
+  LIST_DELETE_FAIL,
+  LIST_DELETE_REQUEST,
+  LIST_DELETE_SUCCESS,
+  LIST_DELETE_RESET,
 } from "../constants/listConstants";
 
 export const listsAllReducer = (state = { lists: [] }, action) => {
@@ -44,6 +48,21 @@ export const listCreateReducer = (state = {}, action) => {
       return { loading: false, success: action.payload };
     case LIST_CREATE_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case LIST_DELETE_REQUEST:
+      return { loading: true };
+    case LIST_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case LIST_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    case LIST_DELETE_RESET:
+      return { success: false };
     default:
       return state;
   }
