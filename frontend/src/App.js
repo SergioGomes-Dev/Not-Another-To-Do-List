@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import ListScreen from "./screens/ListScreen";
+import ItemScreen from "./screens/ItemScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import VerifyScreen from "./screens/VerifyScreen";
@@ -24,6 +25,7 @@ function App() {
             <Route path="/profile" exact element={<ProfileScreen />} />
             <Route path="/" exact element={<HomeScreen />} />
             <Route path="/list/:id" element={<ListScreen />} />
+            <Route path="/list/:id/:itemid" element={<ItemScreen />} />
           </Routes>
         </Container>
       </main>

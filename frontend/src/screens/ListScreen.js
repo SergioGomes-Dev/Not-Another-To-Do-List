@@ -164,7 +164,9 @@ const ListScreen = () => {
           <ListGroup>
             <>
               {list.content?.map((i) => (
-                <ListGroupItem key={i._id}>{i.item}</ListGroupItem>
+                <ListGroupItem key={i._id}>
+                  <Link to={`/list/${id}/${i._id}`}>{i.item}</Link>
+                </ListGroupItem>
               ))}
             </>
           </ListGroup>

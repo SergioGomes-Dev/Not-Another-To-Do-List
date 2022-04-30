@@ -5,7 +5,7 @@ const lists = [
       {
         item: "Milk",
         notes: "2%",
-        completed: false,
+        completed: true,
         priority: "High",
         deadline: "2022-04-28-08-00",
         recurring: false,

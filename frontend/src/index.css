@@ -50,3 +50,7 @@ main {
 .load-btns {
   text-align: center;
 }
+
+.textarea {
+  resize: none;
+}
