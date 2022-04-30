@@ -50,6 +50,7 @@ const HomeScreen = () => {
     e.preventDefault();
     dispatch(listCreateAction(name));
     dispatch(listsAllAction());
+    setName("");
   };
 
   const loadMoreClick = () => {

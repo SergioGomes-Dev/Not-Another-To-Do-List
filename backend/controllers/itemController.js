@@ -29,6 +29,12 @@ const addItem = asyncHandler(async (req, res) => {
   const { title } = req.body;
   const list = await List.findById(req.params.id);
 
+  // Check Max Number of Items
+  const allItems = list.content;
+  if (allItems.length >= 20) {
+    throw new Error("You Have Reached the Maximum Items Allowed for This List");
+  }
+
   if (!title) {
     res.status(400);
     throw new Error("No Title Entered");
