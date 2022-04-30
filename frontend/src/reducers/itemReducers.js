@@ -14,6 +14,10 @@ import {
   ITEM_EDIT_REQUEST,
   ITEM_EDIT_RESET,
   ITEM_EDIT_SUCCESS,
+  ITEM_CHECK_REQUEST,
+  ITEM_CHECK_SUCCESS,
+  ITEM_CHECK_FAIL,
+  ITEM_CHECK_RESET,
 } from "../constants/itemConstants";
 
 export const itemSingleReducer = (state = { item: [] }, action) => {
@@ -68,6 +72,21 @@ export const itemEditReducer = (state = {}, action) => {
     case ITEM_EDIT_FAIL:
       return { loading: false, error: action.payload };
     case ITEM_EDIT_RESET:
+      return { success: false };
+    default:
+      return state;
+  }
+};
+
+export const itemCheckReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ITEM_CHECK_REQUEST:
+      return { loading: true };
+    case ITEM_CHECK_SUCCESS:
+      return { loading: false, success: true };
+    case ITEM_CHECK_FAIL:
+      return { loading: false, error: action.payload };
+    case ITEM_CHECK_RESET:
       return { success: false };
     default:
       return state;

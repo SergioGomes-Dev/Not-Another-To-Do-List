@@ -131,4 +131,31 @@ const editItem = asyncHandler(async (req, res) => {
   }
 });
 
-export { getItemById, addItem, deleteItem, editItem };
+// @desc   Toggle completed for an item
+// @route  PUT /api/lists/:id/:itemid/check
+// @access Private
+const toggleCheckItem = asyncHandler(async (req, res) => {
+  const list = await List.findById(req.params.id);
+  const item = list.content.id(req.params.itemid);
+
+  if (list) {
+    if (list.user.toString() === req.user._id.toString()) {
+      if (item.completed === true) {
+        item.completed = false;
+      } else {
+        item.completed = true;
+      }
+      await list.save();
+
+      res.json("Item Completed has been updated");
+    } else {
+      res.status(404);
+      throw new Error("Incorrect User, Not Authorized");
+    }
+  } else {
+    res.status(404);
+    throw new Error("List Not Found");
+  }
+});
+
+export { getItemById, addItem, deleteItem, editItem, toggleCheckItem };

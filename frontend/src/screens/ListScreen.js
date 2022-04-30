@@ -12,13 +12,21 @@ import {
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { LIST_DELETE_RESET, LIST_EDIT_RESET } from "../constants/listConstants";
-import { ITEM_ADD_RESET, ITEM_DELETE_RESET } from "../constants/itemConstants";
+import {
+  ITEM_ADD_RESET,
+  ITEM_DELETE_RESET,
+  ITEM_CHECK_RESET,
+} from "../constants/itemConstants";
 import {
   listSingleAction,
   listDeleteAction,
   listEditAction,
 } from "../actions/listActions";
-import { itemCreateAction, itemDeleteAction } from "../actions/itemActions";
+import {
+  itemCreateAction,
+  itemDeleteAction,
+  itemCheckAction,
+} from "../actions/itemActions";
 
 const ListScreen = () => {
   const { id } = useParams();
@@ -61,6 +69,13 @@ const ListScreen = () => {
     error: itemDeleteError,
     success: itemDeleteSuccess,
   } = itemDelete;
+
+  const itemCheck = useSelector((state) => state.itemCheck);
+  const {
+    loading: itemCheckLoading,
+    error: itemCheckError,
+    success: itemCheckSuccess,
+  } = itemCheck;
 
   useEffect(() => {
     if (!userInfo || userInfo.verified === false) {
@@ -119,6 +134,10 @@ const ListScreen = () => {
     setAlertItemShow(false);
   };
 
+  const checkToggleClick = (e) => {
+    dispatch(itemCheckAction(id, e.target.id));
+  };
+
   const redirect = () => {
     navigate("/");
     dispatch({
@@ -130,15 +149,10 @@ const ListScreen = () => {
     setTitle("");
     setItemTitle("");
     dispatch(listSingleAction(id));
-    dispatch({
-      type: LIST_EDIT_RESET,
-    });
-    dispatch({
-      type: ITEM_ADD_RESET,
-    });
-    dispatch({
-      type: ITEM_DELETE_RESET,
-    });
+    dispatch({ type: LIST_EDIT_RESET });
+    dispatch({ type: ITEM_ADD_RESET });
+    dispatch({ type: ITEM_DELETE_RESET });
+    dispatch({ type: ITEM_CHECK_RESET });
   };
 
   return (
@@ -183,14 +197,18 @@ const ListScreen = () => {
         <Loader />
       ) : itemDeleteLoading ? (
         <Loader />
+      ) : itemCheckLoading ? (
+        <Loader />
       ) : null}
       {deleteError && <Message variant="danger">{deleteError}</Message>}
       {editError && <Message variant="danger">{editError}</Message>}
       {itemAddError && <Message variant="danger">{itemAddError}</Message>}
       {itemDeleteError && <Message variant="danger">{itemDeleteError}</Message>}
+      {itemCheckError && <Message variant="danger">{itemCheckError}</Message>}
       {editSuccess && refresh()}
       {itemAddSuccess && refresh()}
       {itemDeleteSuccess && refresh()}
+      {itemCheckSuccess && refresh()}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -241,6 +259,13 @@ const ListScreen = () => {
             <>
               {list.content?.map((i) => (
                 <ListGroupItem key={i._id}>
+                  <Form.Check
+                    id={i._id}
+                    className="inline mx-2"
+                    checked={i.completed}
+                    onClick={checkToggleClick}
+                    aria-label={`${i.item}`}
+                  ></Form.Check>
                   <Link to={`/list/${id}/${i._id}`}>{i.item}</Link>
                   <span
                     id={i._id}

@@ -12,6 +12,9 @@ import {
   ITEM_EDIT_FAIL,
   ITEM_EDIT_REQUEST,
   ITEM_EDIT_SUCCESS,
+  ITEM_CHECK_FAIL,
+  ITEM_CHECK_SUCCESS,
+  ITEM_CHECK_REQUEST,
 } from "../constants/itemConstants";
 
 export const itemSingleAction = (id, itemid) => async (dispatch, getState) => {
@@ -152,3 +155,40 @@ export const itemEditAction =
       });
     }
   };
+
+export const itemCheckAction = (id, itemid) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ITEM_CHECK_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/lists/${id}/${itemid}/check`,
+      {},
+      config
+    );
+
+    dispatch({
+      type: ITEM_CHECK_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ITEM_CHECK_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

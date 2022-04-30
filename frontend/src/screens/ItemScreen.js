@@ -6,8 +6,12 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import Item from "../components/Item";
-import { ITEM_EDIT_RESET } from "../constants/itemConstants";
-import { itemSingleAction, itemEditAction } from "../actions/itemActions";
+import { ITEM_EDIT_RESET, ITEM_CHECK_RESET } from "../constants/itemConstants";
+import {
+  itemSingleAction,
+  itemEditAction,
+  itemCheckAction,
+} from "../actions/itemActions";
 
 const ItemScreen = () => {
   const [editItem, setEditItem] = useState(false);
@@ -28,6 +32,13 @@ const ItemScreen = () => {
     error: editError,
     success: editSuccess,
   } = itemEdit;
+
+  const itemCheck = useSelector((state) => state.itemCheck);
+  const {
+    loading: checkLoading,
+    error: checkError,
+    success: checkSuccess,
+  } = itemCheck;
 
   useEffect(() => {
     dispatch(itemSingleAction(id, itemid));
@@ -52,9 +63,15 @@ const ItemScreen = () => {
     setPriority(e.target.value);
   };
 
+  const checkToggleClick = () => {
+    dispatch(itemCheckAction(id, itemid));
+  };
+
   const refresh = () => {
     dispatch(itemSingleAction(id, itemid));
     dispatch({ type: ITEM_EDIT_RESET });
+    dispatch({ type: ITEM_CHECK_RESET });
+    setEditItem(false);
   };
 
   return (
@@ -64,11 +81,15 @@ const ItemScreen = () => {
       </Link>
 
       {editSuccess && refresh()}
+      {checkSuccess && refresh()}
       {error && <Message variant="danger">{error}</Message>}
       {editError && <Message variant="danger">{editError}</Message>}
+      {checkError && <Message variant="danger">{checkError}</Message>}
       {loading ? (
         <Loader />
       ) : editLoading ? (
+        <Loader />
+      ) : checkLoading ? (
         <Loader />
       ) : (
         <FormContainer>
@@ -105,6 +126,7 @@ const ItemScreen = () => {
               <Form.Check
                 className="inline mx-2"
                 checked={item.completed}
+                onChange={checkToggleClick}
               ></Form.Check>
             </Form.Group>
             <Form.Group controlId="priority">

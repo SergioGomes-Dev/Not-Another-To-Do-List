@@ -13,6 +13,7 @@ import {
   addItem,
   deleteItem,
   editItem,
+  toggleCheckItem,
 } from "../controllers/itemController.js";
 
 //Route /api/lists
@@ -32,5 +33,6 @@ router
   .delete(protect, deleteItem)
   .put(protect, editItem);
 router.route("/:id/item").post(protect, addItem);
+router.route("/:id/:itemid/check").put(protect, toggleCheckItem);
 
 export default router;
