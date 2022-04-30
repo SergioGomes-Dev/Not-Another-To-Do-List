@@ -9,6 +9,9 @@ import {
   ITEM_DELETE_FAIL,
   ITEM_DELETE_REQUEST,
   ITEM_DELETE_SUCCESS,
+  ITEM_EDIT_FAIL,
+  ITEM_EDIT_REQUEST,
+  ITEM_EDIT_SUCCESS,
 } from "../constants/itemConstants";
 
 export const itemSingleAction = (id, itemid) => async (dispatch, getState) => {
@@ -89,15 +92,10 @@ export const itemDeleteAction = (id, itemid) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    // const user = userInfo._id;
-
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-      // data: {
-      //   user,
-      // },
     };
 
     const { data } = await axios.delete(`/api/lists/${id}/${itemid}`, config);
@@ -116,3 +114,41 @@ export const itemDeleteAction = (id, itemid) => async (dispatch, getState) => {
     });
   }
 };
+
+export const itemEditAction =
+  (id, itemid, title, notes, priority) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ITEM_EDIT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/lists/${id}/${itemid}`,
+        { title, notes, priority },
+        config
+      );
+
+      dispatch({
+        type: ITEM_EDIT_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ITEM_EDIT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

@@ -12,6 +12,7 @@ import {
   getItemById,
   addItem,
   deleteItem,
+  editItem,
 } from "../controllers/itemController.js";
 
 //Route /api/lists
@@ -28,7 +29,8 @@ router
 router
   .route("/:id/:itemid")
   .get(protect, getItemById)
-  .delete(protect, deleteItem);
+  .delete(protect, deleteItem)
+  .put(protect, editItem);
 router.route("/:id/item").post(protect, addItem);
 
 export default router;

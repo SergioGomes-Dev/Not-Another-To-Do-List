@@ -152,7 +152,7 @@ const ListScreen = () => {
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this list?</Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={itemDeleteHandler}>
+          <Button variant="danger" onClick={deleteClick}>
             Delete
           </Button>
           <Button variant="dark" onClick={handleAlertClose}>

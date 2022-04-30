@@ -10,6 +10,10 @@ import {
   ITEM_DELETE_REQUEST,
   ITEM_DELETE_SUCCESS,
   ITEM_DELETE_RESET,
+  ITEM_EDIT_FAIL,
+  ITEM_EDIT_REQUEST,
+  ITEM_EDIT_RESET,
+  ITEM_EDIT_SUCCESS,
 } from "../constants/itemConstants";
 
 export const itemSingleReducer = (state = { item: [] }, action) => {
@@ -49,6 +53,21 @@ export const itemDeleteReducer = (state = {}, action) => {
     case ITEM_DELETE_FAIL:
       return { loading: false, error: action.payload };
     case ITEM_DELETE_RESET:
+      return { success: false };
+    default:
+      return state;
+  }
+};
+
+export const itemEditReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ITEM_EDIT_REQUEST:
+      return { loading: true };
+    case ITEM_EDIT_SUCCESS:
+      return { loading: false, success: true };
+    case ITEM_EDIT_FAIL:
+      return { loading: false, error: action.payload };
+    case ITEM_EDIT_RESET:
       return { success: false };
     default:
       return state;

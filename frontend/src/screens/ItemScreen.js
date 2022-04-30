@@ -6,7 +6,8 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import Item from "../components/Item";
-import { itemSingleAction } from "../actions/itemActions";
+import { ITEM_EDIT_RESET } from "../constants/itemConstants";
+import { itemSingleAction, itemEditAction } from "../actions/itemActions";
 
 const ItemScreen = () => {
   const [editItem, setEditItem] = useState(false);
@@ -21,12 +22,22 @@ const ItemScreen = () => {
   const itemSingle = useSelector((state) => state.itemSingle);
   const { loading, error, item } = itemSingle;
 
+  const itemEdit = useSelector((state) => state.itemEdit);
+  const {
+    loading: editLoading,
+    error: editError,
+    success: editSuccess,
+  } = itemEdit;
+
   useEffect(() => {
     dispatch(itemSingleAction(id, itemid));
   }, [dispatch, id, itemid]);
 
   const editItemHandler = (e) => {
     e.preventDefault();
+    document.getElementById("container").classList.toggle("hidden");
+    setEditItem(false);
+    dispatch(itemEditAction(id, itemid, title, notes, priority));
   };
 
   const editClick = () => {
@@ -41,16 +52,24 @@ const ItemScreen = () => {
     setPriority(e.target.value);
   };
 
+  const refresh = () => {
+    dispatch(itemSingleAction(id, itemid));
+    dispatch({ type: ITEM_EDIT_RESET });
+  };
+
   return (
     <>
       <Link className="btn btn-dark my-3" to={`/list/${id}`}>
         Go Back
       </Link>
 
+      {editSuccess && refresh()}
+      {error && <Message variant="danger">{error}</Message>}
+      {editError && <Message variant="danger">{editError}</Message>}
       {loading ? (
         <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
+      ) : editLoading ? (
+        <Loader />
       ) : (
         <FormContainer>
           {editItem === false && (

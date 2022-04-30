@@ -85,4 +85,44 @@ const deleteItem = asyncHandler(async (req, res) => {
   }
 });
 
-export { getItemById, addItem, deleteItem };
+// @desc   Edit an item
+// @route  PUT /api/lists/:id/:itemid
+// @access Private
+const editItem = asyncHandler(async (req, res) => {
+  const list = await List.findById(req.params.id);
+  const item = list.content.id(req.params.itemid);
+
+  if (!req.body.title) {
+    res.status(400);
+    throw new Error("No Title Entered");
+  }
+
+  //If only empty space
+  if (req.body.title.replace(/ /g, "").length === 0) {
+    res.status(400);
+    throw new Error("Title Cannot Be Empty");
+  }
+
+  if (list) {
+    if (list.user.toString() === req.user._id.toString()) {
+      item.item = req.body.title || item.item;
+      item.notes = req.body.notes || item.notes;
+      item.priority = req.body.priority || item.priority;
+      item.deadline = req.body.deadline || item.deadline;
+      item.recurring = req.body.recurring || item.recurring;
+      item.repeats = req.body.repeats || item.repeats;
+
+      await list.save();
+
+      res.json("Item has been updated");
+    } else {
+      res.status(404);
+      throw new Error("Incorrect User, Not Authorized.");
+    }
+  } else {
+    res.status(404);
+    throw new Error("List Not Found");
+  }
+});
+
+export { getItemById, addItem, deleteItem, editItem };
