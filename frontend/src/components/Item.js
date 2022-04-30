@@ -5,7 +5,11 @@ const Item = ({ item }) => {
     <ListGroup>
       <ListGroupItem>Title: {item.item}</ListGroupItem>
       <ListGroupItem>Notes: {item.notes}</ListGroupItem>
-      <ListGroupItem>Completed: {item.completed}</ListGroupItem>
+      {item.completed ? (
+        <ListGroupItem>Completed: True</ListGroupItem>
+      ) : (
+        <ListGroupItem>Completed: False</ListGroupItem>
+      )}
       <ListGroupItem>Priority: {item.priority}</ListGroupItem>
       <ListGroupItem>Deadline: {item.deadline}</ListGroupItem>
       <ListGroupItem>Recurring: {item.recurring}</ListGroupItem>

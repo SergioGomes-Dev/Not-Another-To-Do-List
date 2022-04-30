@@ -8,7 +8,7 @@ import {
   removeList,
   editList,
 } from "../controllers/listController.js";
-import { getItemById } from "../controllers/itemController.js";
+import { getItemById, addItem } from "../controllers/itemController.js";
 
 //Route /api/lists
 
@@ -22,5 +22,6 @@ router
 
 //Routes for Items
 router.route("/:id/:itemid").get(protect, getItemById);
+router.route("/:id/item").post(protect, addItem);
 
 export default router;

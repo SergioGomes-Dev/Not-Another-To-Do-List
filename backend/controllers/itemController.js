@@ -22,4 +22,44 @@ const getItemById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getItemById };
+// @desc   Create a Item
+// @route  POST /api/lists/:id/item
+// @access Private
+const addItem = asyncHandler(async (req, res) => {
+  const { title } = req.body;
+  const list = await List.findById(req.params.id);
+
+  if (!title) {
+    res.status(400);
+    throw new Error("No Title Entered");
+  }
+
+  //If only empty space
+  if (title.replace(/ /g, "").length === 0) {
+    res.status(400);
+    throw new Error("Title Cannot Be Empty");
+  }
+
+  if (list) {
+    if (list.user.toString() === req.user._id.toString()) {
+      const newItem = await List.findByIdAndUpdate(req.params.id, {
+        $push: {
+          content: {
+            item: title,
+          },
+        },
+      });
+
+      await newItem.save();
+      res.json("Item Created");
+    } else {
+      res.status(404);
+      throw new Error("Incorrect User, Not Authorized.");
+    }
+  } else {
+    res.status(404);
+    throw new Error("Cannot Create Item Here");
+  }
+});
+
+export { getItemById, addItem };

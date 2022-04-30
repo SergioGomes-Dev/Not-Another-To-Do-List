@@ -93,17 +93,18 @@ const ItemScreen = () => {
               <Form.Select
                 aria-label="Select Priority"
                 onChange={priorityChange}
+                tabIndex={0}
               >
                 <option value={priority}>Select a priority</option>
-                <option value="None">1. None</option>
-                <option value="Low">2. Low</option>
-                <option value="Medium">3. Medium</option>
-                <option value="High">4. High</option>
-                <option value="Very High">5. Very High</option>
+                <option value="None">None</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Very High">Very High</option>
               </Form.Select>
             </Form.Group>
             <Button className="my-2" type="submit" variant="dark">
-              Sumbit Edit
+              Submit Edit
             </Button>
           </Form>
         </FormContainer>
