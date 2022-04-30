@@ -6,6 +6,9 @@ import {
   ITEM_FAIL,
   ITEM_REQUEST,
   ITEM_SUCCESS,
+  ITEM_DELETE_FAIL,
+  ITEM_DELETE_REQUEST,
+  ITEM_DELETE_SUCCESS,
 } from "../constants/itemConstants";
 
 export const itemSingleAction = (id, itemid) => async (dispatch, getState) => {
@@ -68,6 +71,44 @@ export const itemCreateAction = (id, title) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ITEM_ADD_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const itemDeleteAction = (id, itemid) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ITEM_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // const user = userInfo._id;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      // data: {
+      //   user,
+      // },
+    };
+
+    const { data } = await axios.delete(`/api/lists/${id}/${itemid}`, config);
+
+    dispatch({
+      type: ITEM_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ITEM_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

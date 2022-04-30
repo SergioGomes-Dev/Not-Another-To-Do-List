@@ -12,21 +12,22 @@ import {
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { LIST_DELETE_RESET, LIST_EDIT_RESET } from "../constants/listConstants";
-import { ITEM_ADD_RESET } from "../constants/itemConstants";
+import { ITEM_ADD_RESET, ITEM_DELETE_RESET } from "../constants/itemConstants";
 import {
   listSingleAction,
   listDeleteAction,
   listEditAction,
 } from "../actions/listActions";
-import { itemCreateAction } from "../actions/itemActions";
+import { itemCreateAction, itemDeleteAction } from "../actions/itemActions";
 
 const ListScreen = () => {
   const { id } = useParams();
-
+  const [itemId, setItemId] = useState("");
   const [title, setTitle] = useState("");
   const [itemTitle, setItemTitle] = useState("");
 
   const [alertShow, setAlertShow] = useState(false);
+  const [alertItemShow, setAlertItemShow] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +54,13 @@ const ListScreen = () => {
     error: itemAddError,
     success: itemAddSuccess,
   } = itemAdd;
+
+  const itemDelete = useSelector((state) => state.itemDelete);
+  const {
+    loading: itemDeleteLoading,
+    error: itemDeleteError,
+    success: itemDeleteSuccess,
+  } = itemDelete;
 
   useEffect(() => {
     if (!userInfo || userInfo.verified === false) {
@@ -100,6 +108,17 @@ const ListScreen = () => {
     setAlertShow(true);
   };
 
+  const handleAlertItemShow = (e) => {
+    setAlertItemShow(true);
+    setItemId(e.target.id);
+  };
+  const handleAlertItemClose = () => setAlertItemShow(false);
+
+  const itemDeleteHandler = () => {
+    dispatch(itemDeleteAction(id, itemId));
+    setAlertItemShow(false);
+  };
+
   const redirect = () => {
     navigate("/");
     dispatch({
@@ -108,12 +127,17 @@ const ListScreen = () => {
   };
 
   const refresh = () => {
+    setTitle("");
+    setItemTitle("");
     dispatch(listSingleAction(id));
     dispatch({
       type: LIST_EDIT_RESET,
     });
     dispatch({
       type: ITEM_ADD_RESET,
+    });
+    dispatch({
+      type: ITEM_DELETE_RESET,
     });
   };
 
@@ -128,10 +152,24 @@ const ListScreen = () => {
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this list?</Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={deleteClick}>
+          <Button variant="danger" onClick={itemDeleteHandler}>
             Delete
           </Button>
           <Button variant="dark" onClick={handleAlertClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={alertItemShow} onHide={handleAlertItemClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title id="alert-title">Alert</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this item?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={itemDeleteHandler}>
+            Delete
+          </Button>
+          <Button variant="dark" onClick={handleAlertItemClose}>
             Cancel
           </Button>
         </Modal.Footer>
@@ -143,13 +181,16 @@ const ListScreen = () => {
         <Loader />
       ) : itemAddLoading ? (
         <Loader />
+      ) : itemDeleteLoading ? (
+        <Loader />
       ) : null}
       {deleteError && <Message variant="danger">{deleteError}</Message>}
       {editError && <Message variant="danger">{editError}</Message>}
       {itemAddError && <Message variant="danger">{itemAddError}</Message>}
-      {itemAddSuccess && <Message variant="success">Item Added</Message>}
+      {itemDeleteError && <Message variant="danger">{itemDeleteError}</Message>}
       {editSuccess && refresh()}
       {itemAddSuccess && refresh()}
+      {itemDeleteSuccess && refresh()}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -201,6 +242,17 @@ const ListScreen = () => {
               {list.content?.map((i) => (
                 <ListGroupItem key={i._id}>
                   <Link to={`/list/${id}/${i._id}`}>{i.item}</Link>
+                  <span
+                    id={i._id}
+                    tabIndex={0}
+                    onKeyPress={handleAlertItemShow}
+                    aria-label="Delete List Button"
+                  ></span>
+                  <i
+                    id={i._id}
+                    class="fa-solid fa-circle-xmark point mx-2"
+                    onClick={handleAlertItemShow}
+                  ></i>
                 </ListGroupItem>
               ))}
             </>
@@ -215,7 +267,7 @@ const ListScreen = () => {
             ></span>
             <i
               id="add-item-toggle inline"
-              class="fa-solid fa-circle-plus"
+              class="fa-solid fa-circle-plus point"
               onClick={addItemClick}
             ></i>
           </div>

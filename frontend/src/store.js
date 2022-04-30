@@ -8,7 +8,11 @@ import {
   listDeleteReducer,
   listEditReducer,
 } from "./reducers/listReducers";
-import { itemSingleReducer, itemAddReducer } from "./reducers/itemReducers";
+import {
+  itemSingleReducer,
+  itemAddReducer,
+  itemDeleteReducer,
+} from "./reducers/itemReducers";
 import {
   userLoginReducer,
   userRegisterReducer,
@@ -26,6 +30,7 @@ const reducer = combineReducers({
   listEdit: listEditReducer,
   itemSingle: itemSingleReducer,
   itemAdd: itemAddReducer,
+  itemDelete: itemDeleteReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userEmail: userEmailReducer,

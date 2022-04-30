@@ -62,4 +62,27 @@ const addItem = asyncHandler(async (req, res) => {
   }
 });
 
-export { getItemById, addItem };
+// @desc   Delete an Item by ID
+// @route  DELETE /api/lists/:id/:itemid
+// @access Private
+const deleteItem = asyncHandler(async (req, res) => {
+  const list = await List.findById(req.params.id);
+
+  if (list) {
+    if (list.user.toString() === req.user._id.toString()) {
+      list.content.id(req.params.itemid).remove();
+
+      await list.save();
+
+      res.json("Item has been removed");
+    } else {
+      res.status(404);
+      throw new Error("Incorrect User, Not Authorized.");
+    }
+  } else {
+    res.status(404);
+    throw new Error("Cannot Delete Item Here");
+  }
+});
+
+export { getItemById, addItem, deleteItem };
