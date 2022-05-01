@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import SearchBox from "./SearchBox";
 import { logoutAction } from "../actions/userActions";
 
 const Header = () => {
@@ -29,6 +30,7 @@ const Header = () => {
             <>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
+                <SearchBox />
                 <Nav className="ms-sm-auto">
                   {userInfo.verified === true && (
                     <LinkContainer to="/profile">

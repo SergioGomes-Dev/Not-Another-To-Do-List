@@ -5,7 +5,16 @@ import List from "../models/listModel.js";
 // @route   GET /api/lists
 // @access  Private
 const getLists = asyncHandler(async (req, res) => {
-  const lists = await List.find({ user: req.user });
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
+  const lists = await List.find({ user: req.user, ...keyword });
 
   res.json(lists);
 });

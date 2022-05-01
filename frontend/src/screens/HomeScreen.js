@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import List from "../components/List";
 import Loader from "../components/Loader";
@@ -10,6 +10,7 @@ import { listsAllAction, listCreateAction } from "../actions/listActions";
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { keyword } = useParams();
 
   const [name, setName] = useState("");
   const [maxLists, setMaxLists] = useState(3);
@@ -34,8 +35,8 @@ const HomeScreen = () => {
     if (userInfo?.verified === false) {
       navigate("/login");
     }
-    dispatch(listsAllAction());
-  }, [dispatch, navigate, userInfo]);
+    dispatch(listsAllAction(keyword));
+  }, [dispatch, navigate, userInfo, keyword]);
 
   const newListClick = () => {
     document.getElementById("add-new-list").classList.toggle("hidden");

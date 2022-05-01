@@ -17,37 +17,42 @@ import {
   LIST_EDIT_SUCCESS,
 } from "../constants/listConstants";
 
-export const listsAllAction = () => async (dispatch, getState) => {
-  try {
-    dispatch({ type: LISTS_REQUEST });
+export const listsAllAction =
+  (keyword = "") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: LISTS_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.get("/api/lists", config);
+      const { data } = await axios.get(
+        `/api/lists/?keyword=${keyword}`,
+        config
+      );
 
-    dispatch({
-      type: LISTS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: LISTS_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: LISTS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: LISTS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const listSingleAction = (id) => async (dispatch, getState) => {
   try {

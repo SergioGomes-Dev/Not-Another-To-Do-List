@@ -23,9 +23,10 @@ function App() {
             <Route path="/verify" element={<VerifyScreen />} />
             <Route path="/verify/:emailtoken" element={<EmailScreen />} />
             <Route path="/profile" exact element={<ProfileScreen />} />
-            <Route path="/" exact element={<HomeScreen />} />
-            <Route path="/list/:id" element={<ListScreen />} />
             <Route path="/list/:id/:itemid" element={<ItemScreen />} />
+            <Route path="/list/:id" element={<ListScreen />} />
+            <Route path="/search/:keyword" element={<HomeScreen />} />
+            <Route path="/" exact element={<HomeScreen />} />
           </Routes>
         </Container>
       </main>
