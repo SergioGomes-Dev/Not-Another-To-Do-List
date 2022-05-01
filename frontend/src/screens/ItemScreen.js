@@ -119,6 +119,7 @@ const ItemScreen = () => {
                 cols="3"
                 placeholder="Enter notes for the item"
                 value={notes}
+                onChange={(e) => setNotes(e.target.value)}
               />
             </Form.Group>
             <Form.Group controlId="completed">

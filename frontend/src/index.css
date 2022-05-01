@@ -54,3 +54,15 @@ main {
 .textarea {
   resize: none;
 }
+
+.multi-check {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.item-x {
+  position: absolute;
+  right: 25px;
+  top: 14px;
+}

@@ -8,9 +8,12 @@ import {
   Modal,
   Button,
   Form,
+  OverlayTrigger,
+  Tooltip,
 } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import PriorityBadge from "../components/PriorityBadge";
 import { LIST_DELETE_RESET, LIST_EDIT_RESET } from "../constants/listConstants";
 import {
   ITEM_ADD_RESET,
@@ -145,6 +148,12 @@ const ListScreen = () => {
     });
   };
 
+  const notesToolTip = (props) => (
+    <Tooltip id="notes-tooltip" {...props}>
+      This Item has notes
+    </Tooltip>
+  );
+
   const refresh = () => {
     setTitle("");
     setItemTitle("");
@@ -263,19 +272,37 @@ const ListScreen = () => {
                     id={i._id}
                     className="inline mx-2"
                     checked={i.completed}
-                    onClick={checkToggleClick}
+                    onChange={checkToggleClick}
                     aria-label={`${i.item}`}
                   ></Form.Check>
                   <Link to={`/list/${id}/${i._id}`}>{i.item}</Link>
+                  <PriorityBadge priority={i.priority} />
+
+                  {i.notes && (
+                    <>
+                      <span
+                        tabIndex={0}
+                        aria-label="This Item has notes"
+                      ></span>
+                      <OverlayTrigger
+                        overlay={notesToolTip}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                      >
+                        <i class="fa-solid fa-pencil ms-1 point"></i>
+                      </OverlayTrigger>
+                    </>
+                  )}
                   <span
                     id={i._id}
+                    className="item-x"
                     tabIndex={0}
                     onKeyPress={handleAlertItemShow}
                     aria-label="Delete List Button"
                   ></span>
                   <i
                     id={i._id}
-                    class="fa-solid fa-circle-xmark point mx-2"
+                    class="fa-solid fa-circle-xmark point mx-2 item-x"
                     onClick={handleAlertItemShow}
                   ></i>
                 </ListGroupItem>

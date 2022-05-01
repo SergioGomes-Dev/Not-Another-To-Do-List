@@ -1,10 +1,19 @@
-import { ListGroup, ListGroupItem } from "react-bootstrap";
+import { Form, ListGroup, ListGroupItem } from "react-bootstrap";
 
 const Item = ({ item }) => {
   return (
     <ListGroup>
       <ListGroupItem>Title: {item.item}</ListGroupItem>
-      <ListGroupItem>Notes: {item.notes}</ListGroupItem>
+      <ListGroupItem>
+        Notes:
+        <Form.Control
+          className="textarea"
+          as="textarea"
+          rows="5"
+          cols="3"
+          value={item.notes}
+        ></Form.Control>
+      </ListGroupItem>
       {item.completed ? (
         <ListGroupItem>Completed: True</ListGroupItem>
       ) : (
