@@ -10,6 +10,7 @@ import {
   Form,
   OverlayTrigger,
   Tooltip,
+  Dropdown,
 } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -36,6 +37,8 @@ const ListScreen = () => {
   const [itemId, setItemId] = useState("");
   const [title, setTitle] = useState("");
   const [itemTitle, setItemTitle] = useState("");
+  const [filter, setFilter] = useState("No Filter");
+  const [priority, setPriority] = useState("No Priority");
 
   const [alertShow, setAlertShow] = useState(false);
   const [alertItemShow, setAlertItemShow] = useState(false);
@@ -154,6 +157,14 @@ const ListScreen = () => {
     </Tooltip>
   );
 
+  const selectFilter = (e) => {
+    setFilter(e);
+  };
+
+  const selectPriority = (e) => {
+    setPriority(e);
+  };
+
   const refresh = () => {
     setTitle("");
     setItemTitle("");
@@ -169,6 +180,7 @@ const ListScreen = () => {
       <Link className="btn btn-dark my-3" to="/" aria-label="go back button">
         Go Back
       </Link>
+
       <Modal show={alertShow} onHide={handleAlertClose} centered>
         <Modal.Header closeButton>
           <Modal.Title id="alert-title">Alert</Modal.Title>
@@ -263,50 +275,116 @@ const ListScreen = () => {
                 Done
               </Button>
             </Form>
+            <hr></hr>
+            <div className="filters">
+              <Dropdown onSelect={selectFilter} className="inline">
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  role="menu"
+                  aria-label="filter menu"
+                >
+                  {filter}
+                </Dropdown.Toggle>
+                <Dropdown.Menu variant="dark">
+                  <Dropdown.Item eventKey="No Filter">No Filter</Dropdown.Item>
+                  <Dropdown.Item eventKey="Uncompleted">
+                    Uncompleted
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="Completed">Completed</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <Dropdown onSelect={selectPriority} className="inline mx-2">
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  role="menu"
+                  variant="dark"
+                  aria-label="priority filter menu"
+                >
+                  Priority: {priority}
+                </Dropdown.Toggle>
+                <Dropdown.Menu variant="dark">
+                  <Dropdown.Item eventKey="No Priority">
+                    No Priority
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="None">None</Dropdown.Item>
+                  <Dropdown.Item eventKey="Low">Low</Dropdown.Item>
+                  <Dropdown.Item eventKey="Medium">Medium</Dropdown.Item>
+                  <Dropdown.Item eventKey="High">High</Dropdown.Item>
+                  <Dropdown.Item eventKey="Very High">Very High</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </Card.Title>
           <ListGroup>
             <>
-              {list.content?.map((i) => (
-                <ListGroupItem key={i._id}>
-                  <Form.Check
-                    id={i._id}
-                    className="inline mx-2"
-                    checked={i.completed}
-                    onChange={checkToggleClick}
-                    aria-label={`${i.item}`}
-                  ></Form.Check>
-                  <Link to={`/list/${id}/${i._id}`}>{i.item}</Link>
-                  <PriorityBadge priority={i.priority} />
+              {list.content
+                ?.filter(function (i) {
+                  if (priority !== "No Priority") {
+                    if (filter === "No Filter") {
+                      return i.priority === priority;
+                    }
+                    if (filter === "Uncompleted") {
+                      return (
+                        (i.completed === false) & (i.priority === priority)
+                      );
+                    }
+                    if (filter === "Completed") {
+                      return (i.completed === true) & (i.priority === priority);
+                    }
+                  } else {
+                    if (filter === "No Filter") {
+                      return i;
+                    }
+                    if (filter === "Uncompleted") {
+                      return i.completed === false;
+                    }
+                    if (filter === "Completed") {
+                      return i.completed === true;
+                    }
+                  }
+                })
+                .map((i) => (
+                  <ListGroupItem key={i._id}>
+                    <Form.Check
+                      id={i._id}
+                      className="inline mx-2"
+                      checked={i.completed}
+                      onChange={checkToggleClick}
+                      aria-label={`${i.item}`}
+                    ></Form.Check>
+                    <Link to={`/list/${id}/${i._id}`}>{i.item}</Link>
+                    <PriorityBadge priority={i.priority} />
 
-                  {i.notes && (
-                    <>
-                      <span
-                        tabIndex={0}
-                        aria-label="This Item has notes"
-                      ></span>
-                      <OverlayTrigger
-                        overlay={notesToolTip}
-                        placement="right"
-                        delay={{ show: 250, hide: 400 }}
-                      >
-                        <i class="fa-solid fa-pencil ms-1 point"></i>
-                      </OverlayTrigger>
-                    </>
-                  )}
-                  <span
-                    id={i._id}
-                    className="item-x"
-                    tabIndex={0}
-                    onKeyPress={handleAlertItemShow}
-                    aria-label="Delete List Button"
-                  ></span>
-                  <i
-                    id={i._id}
-                    class="fa-solid fa-circle-xmark point mx-2 item-x"
-                    onClick={handleAlertItemShow}
-                  ></i>
-                </ListGroupItem>
-              ))}
+                    {i.notes && (
+                      <>
+                        <span
+                          tabIndex={0}
+                          aria-label="This Item has notes"
+                        ></span>
+                        <OverlayTrigger
+                          overlay={notesToolTip}
+                          placement="right"
+                          delay={{ show: 250, hide: 400 }}
+                        >
+                          <i class="fa-solid fa-pencil ms-1 point"></i>
+                        </OverlayTrigger>
+                      </>
+                    )}
+                    <span
+                      id={i._id}
+                      className="item-x"
+                      tabIndex={0}
+                      onKeyPress={handleAlertItemShow}
+                      aria-label="Delete List Button"
+                    ></span>
+                    <i
+                      id={i._id}
+                      class="fa-solid fa-circle-xmark point mx-2 item-x"
+                      onClick={handleAlertItemShow}
+                    ></i>
+                  </ListGroupItem>
+                ))}
             </>
           </ListGroup>
           <div id="add-new-item-prompt" className="mx-1 my-3">

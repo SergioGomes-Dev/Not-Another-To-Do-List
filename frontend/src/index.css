@@ -55,14 +55,15 @@ main {
   resize: none;
 }
 
-.multi-check {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-
 .item-x {
   position: absolute;
   right: 25px;
   top: 14px;
+}
+
+.filters {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
