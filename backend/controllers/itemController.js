@@ -109,6 +109,12 @@ const editItem = asyncHandler(async (req, res) => {
     throw new Error("Title Cannot Be Empty");
   }
 
+  //If Notes are past the character length
+  if (req.body.notes.length > 350) {
+    res.status(400);
+    throw new Error("Notes reached the character limit of 350");
+  }
+
   if (list) {
     if (list.user.toString() === req.user._id.toString()) {
       item.item = req.body.title || item.item;

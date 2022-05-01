@@ -48,6 +48,8 @@ const ItemScreen = () => {
     e.preventDefault();
     document.getElementById("container").classList.toggle("hidden");
     setEditItem(false);
+    console.log("Notes: " + notes);
+    dispatch({ type: ITEM_EDIT_RESET });
     dispatch(itemEditAction(id, itemid, title, notes, priority));
   };
 
