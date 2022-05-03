@@ -10,6 +10,7 @@ const getItemById = asyncHandler(async (req, res) => {
   const item = list.content.id(req.params.itemid);
 
   if (item) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       res.json(item);
     } else {
@@ -47,6 +48,7 @@ const addItem = asyncHandler(async (req, res) => {
   }
 
   if (list) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       const newItem = await List.findByIdAndUpdate(req.params.id, {
         $push: {
@@ -75,6 +77,7 @@ const deleteItem = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
   if (list) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       list.content.id(req.params.itemid).remove();
 
@@ -116,6 +119,7 @@ const editItem = asyncHandler(async (req, res) => {
   }
 
   if (list) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       item.item = req.body.title || item.item;
       item.notes = req.body.notes || item.notes;
@@ -145,6 +149,7 @@ const toggleCheckItem = asyncHandler(async (req, res) => {
   const item = list.content.id(req.params.itemid);
 
   if (list) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       if (item.completed === true) {
         item.completed = false;

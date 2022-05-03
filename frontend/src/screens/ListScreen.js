@@ -181,6 +181,7 @@ const ListScreen = () => {
         Go Back
       </Link>
 
+      {/* Alert Modals */}
       <Modal show={alertShow} onHide={handleAlertClose} centered>
         <Modal.Header closeButton>
           <Modal.Title id="alert-title">Alert</Modal.Title>
@@ -209,6 +210,7 @@ const ListScreen = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
       {success && redirect()}
       {deleteLoading ? (
         <Loader />
@@ -317,6 +319,7 @@ const ListScreen = () => {
             </div>
           </Card.Title>
           <ListGroup>
+            {/* Items in List */}
             <>
               {list.content
                 ?.filter(function (i) {

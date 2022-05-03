@@ -25,6 +25,7 @@ const getLists = asyncHandler(async (req, res) => {
 const getListById = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
+  // User Verification
   if (list.user.toString() === req.user._id.toString()) {
     if (list) {
       res.json(list);
@@ -78,6 +79,7 @@ const removeList = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
   if (list) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       await list.remove();
       res.json("List Removed");
@@ -109,6 +111,7 @@ const editList = asyncHandler(async (req, res) => {
   }
 
   if (list) {
+    // User Verification
     if (list.user.toString() === req.user._id.toString()) {
       list.name = req.body.name || list.name;
 
